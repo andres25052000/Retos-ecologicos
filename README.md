@@ -11,15 +11,10 @@ Autor(es): Maria Paula Rodriguez y Andres Felipe Cristancho
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - Funcionalidades de la aplicación:
 - Retos ecológicos semanales:
-- La aplicación propone retos cada semana enfocados en promover hábitos sostenibles, como reciclar, reducir el consumo de agua o utilizar medios de transporte ecológicos.
-- Sistema de acumulación de puntos:
-Los usuarios obtienen puntos al completar retos ecológicos. Estos puntos permiten medir su impacto ambiental y pueden utilizarse para desbloquear beneficios dentro de la aplicación.
-Seguimiento del progreso:
-La app permite visualizar el progreso del usuario en los retos completados y su contribución al cuidado del medio ambiente.
-Categoría de productos ecológicos:
-Sección dedicada a la visualización y compra de productos sostenibles y amigables con el medio ambiente.
-Impacto ambiental de las compras:
-Cada producto muestra información sobre su contribución al medio ambiente, indicando cómo ayuda a reducir residuos, emisiones o consumo de recursos.
-Perfil de usuario:
-Espacio donde el usuario puede consultar sus puntos acumulados, retos completados y estadísticas de impacto ecológico.
+- Retos ecológicos semanales: La aplicación propone retos cada semana enfocados en promover hábitos sostenibles, como reciclar, reducir el consumo de agua o utilizar medios de transporte ecológicos.
+Sistema de acumulación de puntos: Los usuarios obtienen puntos al completar retos ecológicos. Estos puntos permiten medir su impacto ambiental y pueden utilizarse para desbloquear beneficios dentro de la aplicación.
+Seguimiento del progreso: La app permite visualizar el progreso del usuario en los retos completados y su contribución al cuidado del medio ambiente.
+Categoría de productos ecológicos: Sección dedicada a la visualización y compra de productos sostenibles y amigables con el medio ambiente.
+Impacto ambiental de las compras: Cada producto muestra información sobre su contribución al medio ambiente, indicando cómo ayuda a reducir residuos, emisiones o consumo de recursos.
+Perfil de usuario: Espacio donde el usuario puede consultar sus puntos acumulados, retos completados y estadísticas de impacto ecológico.
 - [Diseño de la interfaz de usuario](docs/ui.md)
