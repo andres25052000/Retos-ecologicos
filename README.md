@@ -11,6 +11,6 @@ Autor(es): Maria Paula Rodriguez y Andres Felipe Cristancho
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - Funcionalidades de la aplicación:
 - Retos ecológicos semanales:
-  La aplicación propone retos cada semana enfocados en promover hábitos sostenibles, como reciclar, reducir el consumo de agua o utilizar medios de transporte ecológicos.
+La aplicación propone retos cada semana enfocados en promover hábitos sostenibles, como reciclar, reducir el consumo de agua o utilizar medios de transporte ecológicos.
 - 
 - [Diseño de la interfaz de usuario](docs/ui.md)
