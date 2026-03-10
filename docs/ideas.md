@@ -2,20 +2,10 @@
 
 ## Idea 1
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Aplicación móvil enfocada en promover hábitos sostenibles mediante retos ecológicos semanales. La app propone actividades sencillas que los usuarios pueden realizar en su vida diaria, como reducir el consumo de agua, reciclar residuos o utilizar medios de transporte ecológicos como la bicicleta. Al completar estos retos, los usuarios obtienen puntos que se acumulan dentro de la aplicación, permitiendo visualizar su progreso y su impacto positivo en el medio ambiente.
 
 Aplicaciones similares:
 
-- ...
-- ...
-- ...
-
-## Idea 2
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Aplicaciones similares:
-
-- ...
-- ...
-- ...
+- Oroeco
+- JouleBug
+- Ecosia
