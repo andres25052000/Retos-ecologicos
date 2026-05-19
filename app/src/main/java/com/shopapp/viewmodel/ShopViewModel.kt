@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shopapp.AppSession
 import com.shopapp.data.model.*
+import com.shopapp.data.model.ActivityChallenge
+import com.shopapp.data.repository.ActivityChallengeRepository
 import com.shopapp.data.repository.BannerItem
 import com.shopapp.data.repository.EcoRepository
+import com.shopapp.data.repository.FirestoreActivityChallengeRepository
 import com.shopapp.data.repository.FirestoreOrderRepository
 import com.shopapp.data.repository.FirestoreProductRepository
 import com.shopapp.data.repository.FirestoreUserRepository
@@ -85,6 +88,10 @@ class ShopViewModel : ViewModel() {
 
     private val _ecoChallenges = MutableLiveData<List<EcoChallenge>>()
     val ecoChallenges: LiveData<List<EcoChallenge>> = _ecoChallenges
+
+    /** Daily activity challenges for the home screen widget */
+    private val _dailyActivityChallenges = MutableLiveData<List<ActivityChallenge>>()
+    val dailyActivityChallenges: LiveData<List<ActivityChallenge>> = _dailyActivityChallenges
 
     // ─── Init ──────────────────────────────────────────────────────────────────
 
@@ -238,6 +245,14 @@ class ShopViewModel : ViewModel() {
             purchaseCount = UserRepository.getPurchaseCount(),
             categoriesBought = UserRepository.getCategoriesBought()
         )
+    }
+
+    /** Load daily activity challenges from Firestore (for home screen) */
+    fun refreshDailyActivityChallenges() {
+        val uid = AppSession.userId
+        FirestoreActivityChallengeRepository.getDailyChallenges(uid) { challenges ->
+            _dailyActivityChallenges.postValue(challenges)
+        }
     }
 
     // ─── User Actions ─────────────────────────────────────────────────────────

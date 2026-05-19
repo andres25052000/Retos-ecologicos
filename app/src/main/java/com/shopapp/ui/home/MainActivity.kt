@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
     fun navigateToNotifications()   { navController.navigate(R.id.notificationsFragment) }
     fun navigateToHelp()            { navController.navigate(R.id.helpFragment) }
     fun navigateToCheckout()        { navController.navigate(R.id.checkoutFragment) }
+    fun navigateToEcoTab()          { navController.navigate(R.id.ecoChallengesFragment) }
 
     // ─── Navegación admin ─────────────────────────────────────────────────────
 

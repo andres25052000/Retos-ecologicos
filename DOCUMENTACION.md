@@ -1,5 +1,5 @@
 # Documentación Técnica — EconFineShop
-**Versión:** 1.0  
+**Versión:** 2.0  
 **Plataforma:** Android (Kotlin)  
 **Fecha:** Mayo 2026  
 
@@ -24,9 +24,10 @@
 15. [Sistema de notificaciones](#15-sistema-de-notificaciones)
 16. [Panel de administrador](#16-panel-de-administrador)
 17. [Sistema de puntos ecológicos](#17-sistema-de-puntos-ecológicos)
-18. [Sesión de usuario — AppSession](#18-sesión-de-usuario--appsession)
-19. [Configuración del proyecto](#19-configuración-del-proyecto)
-20. [Decisiones técnicas importantes](#20-decisiones-técnicas-importantes)
+18. [Retos de actividad ecológica](#18-retos-de-actividad-ecológica)
+19. [Sesión de usuario — AppSession](#19-sesión-de-usuario--appsession)
+20. [Configuración del proyecto](#20-configuración-del-proyecto)
+21. [Decisiones técnicas importantes](#21-decisiones-técnicas-importantes)
 
 ---
 
@@ -40,7 +41,8 @@
 - Flujo de confirmación de pedido con selección de dirección y método de pago
 - Historial de pedidos sincronizado con la nube
 - Direcciones y métodos de pago guardados en la nube por usuario
-- Sistema de puntos ecológicos y retos
+- Sistema de puntos ecológicos por compras Y por actividades de la vida real
+- Retos diarios, semanales y mensuales con progreso persistido en Firestore
 - Lista de deseos (wishlist)
 - Notificaciones internas del sistema
 - Panel de administrador para gestión de productos y pedidos
@@ -136,6 +138,7 @@ com.shopapp/
 │
 ├── data/
 │   ├── model/                        # Modelos de datos (data classes)
+│   │   ├── ActivityChallenge.kt
 │   │   ├── Address.kt
 │   │   ├── AppNotification.kt
 │   │   ├── CartItem.kt
@@ -147,10 +150,12 @@ com.shopapp/
 │   │   └── User.kt
 │   │
 │   └── repository/                   # Repositorios de datos
-│       ├── AddressRepository.kt          (local — legacy)
+│       ├── ActivityChallengeRepository.kt            (definiciones estáticas + claves de período)
+│       ├── AddressRepository.kt                      (local — legacy)
 │       ├── EcoRepository.kt
 │       ├── FirebaseAuthRepository.kt
-│       ├── FirestoreAddressRepository.kt (Firestore)
+│       ├── FirestoreActivityChallengeRepository.kt   (Firestore)
+│       ├── FirestoreAddressRepository.kt             (Firestore)
 │       ├── FirestoreOrderRepository.kt   (Firestore)
 │       ├── FirestorePaymentRepository.kt (Firestore)
 │       ├── FirestoreProductRepository.kt (Firestore)
@@ -244,7 +249,8 @@ com.shopapp/
 | **Mis direcciones** | CRUD completo de direcciones de envío, sincronizadas en Firestore |
 | **Métodos de pago** | CRUD de tarjetas, PSE y efectivo con contraentrega, sincronizados en Firestore |
 | **Editar perfil** | Cambiar nombre, teléfono y contraseña |
-| **Retos ecológicos** | Ver y completar retos ambientales que otorgan puntos |
+| **Retos de compras** | Retos acumulables basados en compras (primera compra, puntos acumulados, diversidad de categorías) |
+| **Retos de actividad** | Retos diarios, semanales y mensuales de acciones cotidianas ecológicas (reciclar, caminar, sin bolsas, etc.) |
 | **Notificaciones** | Centro de notificaciones del sistema con navegación contextual |
 | **Ayuda** | Sección de preguntas frecuentes y datos de contacto |
 
@@ -364,7 +370,30 @@ data class User(
 ```
 
 ### EcoChallenge
-Representa un reto ecológico con nombre, descripción, puntos requeridos e ícono. El progreso se calcula dinámicamente comparando los puntos y compras del usuario.
+Representa un reto de compras con nombre, descripción, puntos requeridos e ícono. El progreso se calcula dinámicamente comparando los puntos y compras del usuario.
+
+### ActivityChallenge
+Representa un reto de actividad de la vida real (diario, semanal o mensual).
+
+```kotlin
+data class ActivityChallenge(
+    val id: String,
+    val title: String,
+    val description: String,
+    val icon: String,
+    val period: ChallengePeriod,    // DAILY, WEEKLY, MONTHLY
+    val targetCount: Int,
+    val unit: String,               // "veces", "botellas", "planta", etc.
+    val ecoPoints: Int,
+    var currentProgress: Int = 0,
+    var isCompleted: Boolean = false,
+    var pointsAwarded: Boolean = false
+)
+```
+
+**Propiedades calculadas:**
+- `progressPercent` — porcentaje de avance (0–100)
+- `statusIcon` — "✅" completado, "🔄" en progreso, "⭕" no iniciado
 
 ---
 
@@ -391,6 +420,7 @@ Representa un reto ecológico con nombre, descripción, puntos requeridos e íco
 | `FirestoreOrderRepository` | `orders/{orderId}` | Guardar y consultar pedidos por usuario o todos (admin) |
 | `FirestoreAddressRepository` | `users/{uid}/addresses/{id}` | CRUD de direcciones por usuario |
 | `FirestorePaymentRepository` | `users/{uid}/paymentMethods/{id}` | CRUD de métodos de pago por usuario |
+| `FirestoreActivityChallengeRepository` | `users/{uid}/activityProgress/{docId}` | Progreso de retos de actividad por período |
 
 ---
 
@@ -407,7 +437,8 @@ ViewModel principal compartido entre todos los fragmentos de la tienda. Se insta
 - `banners` — banners del home
 - `currentUser` — usuario en sesión
 - `orderPlaced` — señal de pedido confirmado (se consume una vez)
-- `ecoPoints`, `ecoChallenges` — datos ecológicos
+- `ecoPoints`, `ecoChallenges` — datos ecológicos (puntos de compras)
+- `dailyActivityChallenges` — retos diarios de actividad (para Home)
 - `message` — mensajes temporales para mostrar en UI
 - `searchResults`, `categoryProducts` — resultados de búsqueda y filtro
 
@@ -452,7 +483,7 @@ Maneja el flujo de autenticación.
 
 | Fragment | Descripción |
 |---|---|
-| `HomeFragment` | Home con banners, categorías y secciones de productos. Muestra nombre del usuario y tagline ecológico |
+| `HomeFragment` | Home con banners, categorías, productos y sección "Retos del Día" con los 3 retos diarios y su estado (✅🔄⭕) |
 | `SearchFragment` | Búsqueda en tiempo real con campo de texto y lista de resultados |
 | `ProductDetailFragment` | Detalle completo: imagen, precio, tallas (chips), colores (circles + nombre), cantidad, botón agregar al carrito |
 | `CategoryProductsFragment` | Lista de productos filtrada por categoría |
@@ -471,7 +502,7 @@ Maneja el flujo de autenticación.
 | `WishlistFragment` | Lista de productos guardados como favoritos |
 | `NotificationsFragment` | Centro de notificaciones con navegación contextual al tocar una notificación |
 | `HelpFragment` | Preguntas frecuentes y datos de contacto de soporte |
-| `EcoChallengesFragment` | Retos ecológicos con barra de progreso |
+| `EcoChallengesFragment` | Pantalla dividida en dos secciones: **Retos de Actividad** (con filtro Diarios/Semanales/Mensuales y botón +Registrar) y **Retos de Compras**. Ambas contribuyen al mismo marcador de nivel |
 
 ### Fragments — Admin
 
@@ -495,6 +526,7 @@ La navegación se gestiona con **Navigation Component** y un único grafo declar
 navigateToProductDetail(productId)
 navigateToCategoryProducts(categoryName)
 navigateToCheckout()
+navigateToEcoTab()          // Navega a EcoChallengesFragment (desde Home)
 
 // Perfil
 navigateToEditProfile()
@@ -553,12 +585,20 @@ firestore/
         │       ├── street, city, state, zipCode
         │       ├── phone, isDefault
         │
-        └── paymentMethods/
-            └── {methodId}/
-                ├── id, type ("CREDIT"|"DEBIT"|"PSE"|"CASH_ON_DELIVERY")
-                ├── cardHolder, lastFour, brand, expiryMonth, expiryYear
-                ├── bankName (solo PSE)
-                └── isDefault
+        ├── paymentMethods/
+        │   └── {methodId}/
+        │       ├── id, type ("CREDIT"|"DEBIT"|"PSE"|"CASH_ON_DELIVERY")
+        │       ├── cardHolder, lastFour, brand, expiryMonth, expiryYear
+        │       ├── bankName (solo PSE)
+        │       └── isDefault
+        │
+        └── activityProgress/
+            └── {periodKey}_{challengeId}/
+                ├── challengeId: String
+                ├── periodKey: String       ← "2026-05-19" | "2026-W21" | "2026-05"
+                ├── progress: Int
+                ├── isCompleted: Boolean
+                └── pointsAwarded: Boolean  ← evita sumar puntos dos veces
 ```
 
 ### Estrategia de sincronización de productos
@@ -713,19 +753,78 @@ Cada producto tiene un valor en `ecoPoints`. Al confirmar un pedido, se suman lo
 
 Los puntos se guardan en dos lugares:
 - **Local:** `UserRepository` en SharedPreferences (acceso rápido)
-- **Nube:** `FirestoreUserRepository` en el documento del usuario
+- **Nube:** `FirestoreUserRepository` en el documento del usuario (campo `ecoPoints`)
 
-### Retos ecológicos (`EcoRepository`)
+Los puntos de **compras** y de **actividades** se acumulan en el mismo contador, contribuyendo juntos al nivel ecológico.
+
+### Retos de compras (`EcoRepository`)
 Los retos se evalúan dinámicamente comparando:
 - Total de puntos eco acumulados
 - Cantidad de compras realizadas
 - Categorías de productos comprados
 
-Ejemplos de retos: "Primera compra ecológica", "Coleccionista verde", "Explorador de categorías", "100 puntos eco".
+### Niveles ecológicos
+| Nivel | Emoji | Puntos mínimos |
+|---|---|---|
+| Semilla Verde | 🌱 | 0 |
+| Brote Consciente | 🌿 | 100 |
+| Árbol Guardián | 🌳 | 300 |
+| Defensor del Planeta | 🌍 | 600 |
+| Héroe Ecológico | ⭐ | 1000 |
 
 ---
 
-## 18. Sesión de usuario — AppSession
+## 18. Retos de actividad ecológica
+
+### Descripción
+La pantalla Eco se divide en dos secciones:
+1. **Retos de Actividad** — acciones cotidianas (reciclar, caminar, no usar bolsas, etc.)
+2. **Retos de Compras** — basados en el historial de compras en la app
+
+### Tipos de retos por período
+
+#### Diarios (se reinician cada día)
+| Reto | Meta | Puntos |
+|---|---|---|
+| Sin bolsas plásticas 🛍️ | 1 vez | 10 |
+| Bici o caminata 🚴 | 1 vez | 15 |
+| Tu propio vaso/botella 🧴 | 1 vez | 10 |
+
+#### Semanales (se reinician cada semana)
+| Reto | Meta | Puntos |
+|---|---|---|
+| Reciclar botellas ♻️ | 5 botellas | 30 |
+| Transporte público 🚌 | 3 veces | 25 |
+| Mercado local 🥦 | 2 veces | 20 |
+
+#### Mensuales (se reinician cada mes)
+| Reto | Meta | Puntos |
+|---|---|---|
+| Plantar una planta 🌳 | 1 planta | 100 |
+| Reducir residuos 🗑️ | 4 semanas | 50 |
+| Compostaje en casa 🌱 | 2 veces | 60 |
+
+### Clave de período (Period Key)
+| Período | Formato | Ejemplo |
+|---|---|---|
+| Diario | `yyyy-MM-dd` | `2026-05-19` |
+| Semanal | `yyyy-WNN` | `2026-W21` |
+| Mensual | `yyyy-MM` | `2026-05` |
+
+### Flujo de registro
+1. El usuario toca **"+ Registrar"** en un reto
+2. Se ejecuta una **transacción Firestore** que incrementa `progress` atómicamente
+3. Si `progress >= targetCount` y `pointsAwarded == false`:
+   - Se marca `isCompleted = true`, `pointsAwarded = true`
+   - Se suma `ecoPoints` al usuario en Firestore y en local
+4. El ViewModel actualiza la UI y el marcador de nivel
+
+### Widget en Home
+La sección **"Retos del Día"** muestra los 3 retos diarios con estado: ✅ completado / 🔄 en progreso / ⭕ sin empezar. Al tocar "Ver todos" navega a la pestaña Eco.
+
+---
+
+## 19. Sesión de usuario — AppSession
 
 `AppSession` es un objeto singleton en memoria (no persistente) que almacena el estado de la sesión activa durante la ejecución de la app.
 
@@ -744,7 +843,7 @@ Se inicializa en `SplashActivity` al detectar una sesión Firebase activa y se b
 
 ---
 
-## 19. Configuración del proyecto
+## 20. Configuración del proyecto
 
 ### Permisos requeridos (AndroidManifest.xml)
 ```xml
@@ -773,7 +872,7 @@ targetSdk:     34
 
 ---
 
-## 20. Decisiones técnicas importantes
+## 21. Decisiones técnicas importantes
 
 ### ¿Por qué Single Activity?
 Facilita el manejo del estado compartido (el carrito, el usuario logueado, el badge del carrito) a través de un único ViewModel en el Activity. La navegación entre fragmentos es más fluida y el back stack es más predecible.
@@ -795,4 +894,12 @@ Al establecer una dirección o método de pago como predeterminado, se usa un **
 
 ---
 
-*Documentación generada en Mayo 2026. Cualquier cambio posterior al proyecto debe reflejarse en este documento.*
+### Transacciones Firestore para progreso de retos
+Al registrar el avance en un reto de actividad, se usa `runTransaction()` en vez de un `update` simple. Esto garantiza que el incremento y la asignación de puntos sean atómicos. El campo `pointsAwarded` evita que los puntos se sumen más de una vez por reto completado.
+
+### Claves de período para aislamiento temporal
+En vez de borrar documentos al cambiar de período, se usa una clave compuesta (`periodKey_challengeId`) como ID del documento. Al cambiar el día/semana/mes, se genera una clave nueva y el reto comienza desde cero, mientras que el progreso anterior queda archivado.
+
+---
+
+*Documentación actualizada en Mayo 2026 — versión 2.0. Incluye retos de actividad diarios, semanales y mensuales con persistencia en Firestore y widget en la pantalla principal.*

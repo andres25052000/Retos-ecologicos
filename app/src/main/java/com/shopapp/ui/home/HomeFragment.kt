@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.shopapp.R
+import com.shopapp.data.model.ActivityChallenge
 import com.shopapp.databinding.FragmentHomeBinding
+import com.shopapp.databinding.ItemHomeEcoChallengeBinding
 import com.shopapp.ui.home.adapter.BannerAdapter
 import com.shopapp.ui.home.adapter.CategoryAdapter
 import com.shopapp.ui.home.adapter.ProductAdapter
@@ -16,7 +18,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -27,7 +32,8 @@ class HomeFragment : Fragment() {
         val viewModel = mainActivity.shopViewModel
 
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
-            binding.tvUserName.text = user?.fullName?.split(" ")?.firstOrNull() ?: "Explorar tienda"
+            binding.tvUserName.text =
+                user?.fullName?.split(" ")?.firstOrNull() ?: "Explorar tienda"
         }
 
         // Notification bell
@@ -47,7 +53,9 @@ class HomeFragment : Fragment() {
             mainActivity.navigateToCategoryProducts(category.name)
         }
         binding.rvCategories.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false
+            )
             adapter = categoryAdapter
         }
         viewModel.categories.observe(viewLifecycleOwner) { categoryAdapter.submitList(it) }
@@ -58,7 +66,9 @@ class HomeFragment : Fragment() {
             onAddToCartClick = { viewModel.addToCart(it) }
         )
         binding.rvFeatured.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false
+            )
             adapter = featuredAdapter
         }
         viewModel.featuredProducts.observe(viewLifecycleOwner) { featuredAdapter.submitList(it) }
@@ -69,7 +79,9 @@ class HomeFragment : Fragment() {
             onAddToCartClick = { viewModel.addToCart(it) }
         )
         binding.rvPopular.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false
+            )
             adapter = popularAdapter
         }
         viewModel.popularProducts.observe(viewLifecycleOwner) { popularAdapter.submitList(it) }
@@ -78,7 +90,50 @@ class HomeFragment : Fragment() {
         binding.tvSeeAllFeatured.setOnClickListener { mainActivity.navigateToCategoryProducts("Todos") }
         binding.tvSeeAllPopular.setOnClickListener { mainActivity.navigateToCategoryProducts("Todos") }
         binding.tvSeeAllCategories.setOnClickListener { mainActivity.navigateToCategoryProducts("Todos") }
+
+        // ── Daily eco challenges ────────────────────────────────────────────
+        viewModel.dailyActivityChallenges.observe(viewLifecycleOwner) { challenges ->
+            renderDailyChallenges(challenges)
+        }
+        viewModel.refreshDailyActivityChallenges()
+
+        binding.tvSeeAllChallenges.setOnClickListener {
+            mainActivity.navigateToEcoTab()
+        }
     }
 
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    override fun onResume() {
+        super.onResume()
+        val viewModel = (requireActivity() as MainActivity).shopViewModel
+        viewModel.refreshDailyActivityChallenges()
+    }
+
+    private fun renderDailyChallenges(challenges: List<ActivityChallenge>) {
+        binding.layoutDailyChallenges.removeAllViews()
+        if (challenges.isEmpty()) return
+
+        challenges.forEach { challenge ->
+            val itemBinding = ItemHomeEcoChallengeBinding.inflate(
+                layoutInflater, binding.layoutDailyChallenges, false
+            )
+            itemBinding.tvHomeStatus.text = challenge.statusIcon
+            itemBinding.tvHomeIcon.text = challenge.icon
+            itemBinding.tvHomeTitle.text = challenge.title
+            itemBinding.tvHomeProgress.text =
+                "${challenge.currentProgress} / ${challenge.targetCount} ${challenge.unit}"
+
+            if (challenge.isCompleted) {
+                itemBinding.tvHomePts.text = "¡Hecho!"
+            } else {
+                itemBinding.tvHomePts.text = "+${challenge.ecoPoints}"
+            }
+
+            binding.layoutDailyChallenges.addView(itemBinding.root)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
