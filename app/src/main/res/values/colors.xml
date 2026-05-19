@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Brand Colors -->
+    <color name="primary">#2D6A4F</color>
+    <color name="primary_dark">#1B4332</color>
+    <color name="primary_light">#52B788</color>
+    <color name="primary_container">#D8F3DC</color>
+
+    <!-- Accent -->
+    <color name="accent">#1B4332</color>
+    <color name="accent_light">#2D6A4F</color>
+
+    <!-- Background -->
+    <color name="background">#F8F9FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F0F0F0</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="success">#10B981</color>
+    <color name="error">#EF4444</color>
+    <color name="warning">#F59E0B</color>
+    <color name="star_color">#F59E0B</color>
+
+    <!-- UI Elements -->
+    <color name="divider">#E5E7EB</color>
+    <color name="card_shadow">#1A000000</color>
+    <color name="overlay">#80000000</color>
+    <color name="badge_bg">#2D6A4F</color>
+
+    <!-- Bottom Nav -->
+    <color name="nav_selected">#2D6A4F</color>
+    <color name="nav_unselected">#9CA3AF</color>
+
+    <!-- Shimmer -->
+    <color name="shimmer_base">#E5E7EB</color>
+    <color name="shimmer_highlight">#F3F4F6</color>
+
+    <!-- White / Black -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

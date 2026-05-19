@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EconFineShop</string>
+
+    <!-- Auth -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="phone">Teléfono</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="have_account">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="welcome_back">¡Bienvenido de nuevo!</string>
+    <string name="create_account">Crear Cuenta</string>
+
+    <!-- Home -->
+    <string name="home">Inicio</string>
+    <string name="search">Buscar</string>
+    <string name="cart">Carrito</string>
+    <string name="profile">Perfil</string>
+    <string name="eco">Eco</string>
+    <string name="search_hint">Buscar productos…</string>
+    <string name="featured">Destacados</string>
+    <string name="categories">Categorías</string>
+    <string name="all_products">Todos los productos</string>
+    <string name="see_all">Ver todos</string>
+    <string name="new_arrivals">Nuevos</string>
+    <string name="popular">Popular</string>
+
+    <!-- Product -->
+    <string name="add_to_cart">Agregar al carrito</string>
+    <string name="buy_now">Comprar ahora</string>
+    <string name="description">Descripción</string>
+    <string name="reviews">Reseñas</string>
+    <string name="in_stock">En stock</string>
+    <string name="out_of_stock">Agotado</string>
+    <string name="quantity">Cantidad</string>
+    <string name="size">Talla</string>
+    <string name="color">Color</string>
+
+    <!-- Cart -->
+    <string name="my_cart">Mi Carrito</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="shipping">Envío</string>
+    <string name="total">Total</string>
+    <string name="checkout">Pagar</string>
+    <string name="empty_cart">Tu carrito está vacío</string>
+    <string name="continue_shopping">Continuar comprando</string>
+    <string name="free_shipping">Envío gratis</string>
+
+    <!-- Profile -->
+    <string name="my_profile">Mi Perfil</string>
+    <string name="my_orders">Mis Pedidos</string>
+    <string name="wishlist">Lista de deseos</string>
+    <string name="addresses">Direcciones</string>
+    <string name="payment_methods">Métodos de pago</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="help">Ayuda</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="edit_profile">Editar perfil</string>
+
+    <!-- General -->
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="ok">OK</string>
+    <string name="error">Error</string>
+    <string name="success">Éxito</string>
+    <string name="loading">Cargando…</string>
+    <string name="retry">Reintentar</string>
+    <string name="add">Agregar</string>
+    <string name="update">Actualizar</string>
+    <string name="remove">Eliminar</string>
+</resources>

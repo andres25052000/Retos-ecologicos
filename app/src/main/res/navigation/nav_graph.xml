@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.shopapp.ui.home.HomeFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.shopapp.ui.home.SearchFragment"
+        android:label="Buscar"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.shopapp.ui.cart.CartFragment"
+        android:label="Carrito"
+        tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.shopapp.ui.profile.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.shopapp.ui.product.ProductDetailFragment"
+        android:label="Detalle del producto"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryProductsFragment"
+        android:name="com.shopapp.ui.product.CategoryProductsFragment"
+        android:label="Categoría"
+        tools:layout="@layout/fragment_category_products">
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.shopapp.ui.profile.EditProfileFragment"
+        android:label="Editar Perfil"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.shopapp.ui.profile.OrdersFragment"
+        android:label="Mis Pedidos"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/ecoChallengesFragment"
+        android:name="com.shopapp.ui.eco.EcoChallengesFragment"
+        android:label="Retos Ecológicos"
+        tools:layout="@layout/fragment_eco_challenges" />
+
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.shopapp.ui.profile.WishlistFragment"
+        android:label="Lista de deseos"
+        tools:layout="@layout/fragment_wishlist" />
+
+    <fragment
+        android:id="@+id/addressesFragment"
+        android:name="com.shopapp.ui.profile.AddressesFragment"
+        android:label="Mis Direcciones"
+        tools:layout="@layout/fragment_addresses" />
+
+    <fragment
+        android:id="@+id/paymentMethodsFragment"
+        android:name="com.shopapp.ui.profile.PaymentMethodsFragment"
+        android:label="Métodos de pago"
+        tools:layout="@layout/fragment_payment_methods" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.shopapp.ui.profile.NotificationsFragment"
+        android:label="Notificaciones"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.shopapp.ui.profile.HelpFragment"
+        android:label="Ayuda"
+        tools:layout="@layout/fragment_help" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.shopapp.ui.checkout.CheckoutFragment"
+        android:label="Confirmar pedido"
+        tools:layout="@layout/fragment_checkout" />
+
+    <!-- Admin -->
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.shopapp.ui.admin.AdminDashboardFragment"
+        android:label="Panel Admin"
+        tools:layout="@layout/fragment_admin_dashboard" />
+
+    <fragment
+        android:id="@+id/adminProductsFragment"
+        android:name="com.shopapp.ui.admin.AdminProductsFragment"
+        android:label="Inventario"
+        tools:layout="@layout/fragment_admin_products" />
+
+    <fragment
+        android:id="@+id/adminAddEditProductFragment"
+        android:name="com.shopapp.ui.admin.AdminAddEditProductFragment"
+        android:label="Producto"
+        tools:layout="@layout/fragment_admin_add_edit_product">
+        <argument
+            android:name="productId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminOrdersFragment"
+        android:name="com.shopapp.ui.admin.AdminOrdersFragment"
+        android:label="Pedidos Admin"
+        tools:layout="@layout/fragment_admin_orders" />
+
+</navigation>

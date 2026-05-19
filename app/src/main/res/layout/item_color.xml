@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="64dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="4dp"
+    android:layout_margin="4dp">
+
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <!-- Círculo de color -->
+        <View
+            android:id="@+id/color_view"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_circle_primary" />
+
+        <!-- Anillo de selección -->
+        <View
+            android:id="@+id/selected_ring"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_color_selected_ring"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- Nombre del color -->
+    <TextView
+        android:id="@+id/tv_color_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textSize="10sp"
+        android:textColor="@color/text_secondary"
+        android:lineSpacingMultiplier="1.1" />
+
+</LinearLayout>

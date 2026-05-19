@@ -1,0 +1,31 @@
+# ── Android generados ─────────────────────────────────────────────────────────
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+
+# ── Módulo app ────────────────────────────────────────────────────────────────
+app/build/
+app/.cxx/
+
+# ── Firebase (credenciales — NO subir) ───────────────────────────────────────
+google-services.json
+
+# ── Keystore (firma de la app) ────────────────────────────────────────────────
+*.jks
+*.keystore
+
+# ── Archivos de sistema ───────────────────────────────────────────────────────
+Thumbs.db
+Desktop.ini
+
+# ── Script de generación de documentación (temporal) ─────────────────────────
+generar_doc.py
