@@ -33,7 +33,7 @@
 
 ## 1. Descripción general
 
-**EconFineShop** es una aplicación de comercio electrónico Android orientada a la venta de productos ecológicos. Permite a los usuarios explorar un catálogo de productos, agregar artículos al carrito, gestionar direcciones de envío y métodos de pago, y realizar pedidos. La aplicación incluye un sistema de gamificación mediante puntos ecológicos y retos ambientales para incentivar el consumo responsable.
+**EcoFineShop** es una aplicación de comercio electrónico Android orientada a la venta de productos ecológicos. Permite a los usuarios explorar un catálogo de productos, agregar artículos al carrito, gestionar direcciones de envío y métodos de pago, y realizar pedidos. La aplicación incluye un sistema de gamificación mediante puntos ecológicos y retos ambientales para incentivar el consumo responsable.
 
 ### Características principales
 - Catálogo de productos con categorías, búsqueda y filtros
