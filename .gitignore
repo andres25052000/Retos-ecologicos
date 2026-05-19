@@ -16,9 +16,6 @@
 app/build/
 app/.cxx/
 
-# ── Firebase (credenciales — NO subir) ───────────────────────────────────────
-google-services.json
-
 # ── Keystore (firma de la app) ────────────────────────────────────────────────
 *.jks
 *.keystore

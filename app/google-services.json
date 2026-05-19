@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646551400378",
+    "project_id": "eco-shop-8057a",
+    "storage_bucket": "eco-shop-8057a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646551400378:android:0120ce571a399267f67783",
+        "android_client_info": {
+          "package_name": "com.shopapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzq3tIXAeg8bM1f3e6nsdv-nrfQUmd0yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
