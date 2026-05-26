@@ -1,4 +1,4 @@
-# Eco-retos
+# EcoFineShop
 
 Aplicación móvil diseñada para incentivar hábitos sostenibles mediante el cumplimiento de retos ecológicos. Los usuarios pueden completar diferentes desafíos relacionados con el cuidado del medio ambiente, como el ahorro de agua, el reciclaje o el uso de la bicicleta como medio de transporte.
 
