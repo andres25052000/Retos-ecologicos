@@ -24,5 +24,8 @@ app/.cxx/
 Thumbs.db
 Desktop.ini
 
+# ── Archivos temporales de Microsoft Office ───────────────────────────────────
+~$*
+
 # ── Script de generación de documentación (temporal) ─────────────────────────
 generar_doc.py
